@@ -2,7 +2,8 @@ import { Component } from "react";
 import { nanoid } from "nanoid";
 
 import MyBooksBlock from "./MyBooksBlock/MyBooksblock";
-
+import MyBooksList from "./MyBooksList/MybooksList";
+import MyBooksForm from "./MyBooksForm/MyBooksForm";
 import styles from "./my-books.module.scss";
 
 class myBooks extends Component {
@@ -19,31 +20,17 @@ class myBooks extends Component {
         author: "Jon C. McCrae",
       },
     ],
-    title: "",
-    author: "",
+
     filter: "",
   };
-  // name в інпуті повинен бути такий самий як частинка state яку ми змінюємо
-  handleChange = ({ target }) => {
-    // console.log(e.target.name, e.target.value);
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
-  };
 
-  //при handleSubmit в setState створюємо нову книгу (новий об'єкт) додаючи id
-  //  { items: [...items, newBook], title: "", author: "" } --title: "", author: "" - очистка форми
-  handleSubmit = (e) => {
-    e.preventDefault();
-    if (this.isDublicate()) {
-      const { title, author } = this.state;
-      alert(`${title} - ${author}   - is already exist`);
-      return;
+  onAddBook = ({ title, author }) => {
+    // console.log(title, author);
+    if (this.isDublicate({ title, author })) {
+      return alert(`${title} - ${author} is already exist`);
     }
-
     this.setState((prevState) => {
-      const { title, author, items } = prevState;
+      const { items } = prevState;
 
       //   console.log(prevState);
       const newBook = {
@@ -53,25 +40,20 @@ class myBooks extends Component {
       };
       return { items: [...items, newBook] };
     });
-
-    this.reset();
   };
 
-  reset() {
-    this.setState({ title: "", author: "" });
-  }
-
-  onDeleteBook(id) {
+  onDeleteBook = (id) => {
     this.setState((prevState) => {
       const newItems = prevState.items.filter((item) => item.id !== id);
       // в items потрапляють всі книги крім тої id якої спвіпадає з id книги яку треба видалити
       return { items: newItems };
     });
-  }
+  };
 
-  isDublicate() {
-    const { title, author, items } = this.state;
+  isDublicate({ title, author }) {
+    const { items } = this.state;
     // приводимо до одного реєстру
+    console.log(title, author);
     const normalizedTitle = title.toLowerCase();
     const normalizedAuthor = author.toLowerCase();
     //   перевіряємо чи є в items такий автор та назва
@@ -100,48 +82,14 @@ class myBooks extends Component {
   }
 
   render() {
-    const { title, author } = this.state;
     const items = this.getfilteredBooks();
-    const elements = items.map(({ id, title, author }) => (
-      <li key={id} className={styles.listItem}>
-        Title:{title}. author: {author}.
-        <button
-          onClick={() => {
-            this.onDeleteBook(id);
-          }}
-        >
-          delete
-        </button>
-      </li>
-    ));
+
     return (
       <div className={styles.wrapper}>
         <h3 className={styles.title}>My Books</h3>
         <div className={styles.blocks}>
           <MyBooksBlock title="Add book">
-            <form onSubmit={this.handleSubmit} className={styles.form}>
-              <div className={styles.formGroup}>
-                <label>Book title</label>
-                <input
-                  value={title}
-                  name="title"
-                  onChange={this.handleChange}
-                  className={styles.textField}
-                  placeholder="Book title"
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Book author</label>
-                <input
-                  value={author}
-                  name="author"
-                  onChange={this.handleChange}
-                  className={styles.textField}
-                  placeholder="Book title"
-                />
-              </div>
-              <button type="submit">Add book</button>
-            </form>
+            <MyBooksForm onSubmit={this.onAddBook} />
           </MyBooksBlock>
           <MyBooksBlock title="Book list">
             <input
@@ -150,7 +98,7 @@ class myBooks extends Component {
               className={styles.textField}
               placeholder="Enter book title or author"
             />
-            <ol className={styles.list}>{elements}</ol>
+            <MyBooksList items={items} onDeleteBook={this.onDeleteBook} />
           </MyBooksBlock>
         </div>
       </div>
