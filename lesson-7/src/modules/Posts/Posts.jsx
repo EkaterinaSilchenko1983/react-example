@@ -13,6 +13,7 @@ const Posts = () => {
       try {
         setLoading(true);
         const { data } = await getPosts();
+        console.log(data);
         setItems(data);
       } catch ({ response }) {
         const errorMessage = response.data.message || "Cannot fetch posts";

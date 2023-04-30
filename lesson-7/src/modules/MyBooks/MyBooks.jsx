@@ -9,7 +9,7 @@ import styles from "./my-books.module.scss";
 
 const MyBooks = () => {
   const [books, setBooks] = useState(() => {
-    const items = JSON.parse(localStorage.getItem("my-books"));
+    const items = localStorage.getItem("my-books");
     return items?.length ? items : [];
   });
   const [filter, setFilter] = useState(false);

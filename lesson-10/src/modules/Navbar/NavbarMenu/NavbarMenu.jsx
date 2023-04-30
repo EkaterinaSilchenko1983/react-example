@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./navbar-menu.module.scss";
 
 const NavbarMenu = ({ items }) => {
-  const elements = items.map(({ id, link, text }, index) => {
+  const elements = items.map(({ id, link, text }) => {
     return (
       <li key={id}>
-        <Link>{text}</Link>
+        <NavLink to={link} className={styles.link}>
+          {text}
+        </NavLink>
       </li>
     );
   });
