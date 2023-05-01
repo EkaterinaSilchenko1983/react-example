@@ -7,11 +7,13 @@ import MyBooksForm from "./MyBooksForm/MyBooksForm";
 
 import styles from "./my-books.module.scss";
 
+const getInitialValue = (key, initialValue) => {
+  const result = JSON.parse(localStorage.getItem(key));
+  return result || initialValue;
+};
+
 const MyBooks = () => {
-  const [books, setBooks] = useState(() => {
-    const items = localStorage.getItem("my-books");
-    return items?.length ? items : [];
-  });
+  const [books, setBooks] = useState(() => getInitialValue("my-books", []));
   const [filter, setFilter] = useState(false);
 
   const firstRender = useRef(true);
