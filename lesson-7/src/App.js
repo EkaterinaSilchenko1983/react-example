@@ -15,10 +15,10 @@ function App() {
       <Navbar menuItems={navbarMenuItems} />
       <div className="container">
         {/* <PostsSearch /> */}
-        {/* <Posts /> */}
+        <Posts />
         <ToggleButton text="Click me" />
         <Vote />
-        {/* <MyBooks /> */}
+        <MyBooks />
       </div>
     </>
   );

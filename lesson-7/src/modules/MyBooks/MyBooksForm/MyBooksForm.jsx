@@ -11,7 +11,6 @@ const MyBooksForm = ({ onSubmit }) => {
 
   useEffect(() => {
     titleRef.current.focus();
-    titleRef.current = true;
   }, []);
 
   const handleChange = ({ target }) => {

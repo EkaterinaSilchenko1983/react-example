@@ -1,27 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import { nanoid } from "nanoid";
 
+import { getInitialValue } from "../../shared/utils/localStorage";
+
 import MyBooksBlock from "./MyBooksBlock/MyBooksBlock";
 import MyBooksList from "./MyBooksList/MyBooksList";
 import MyBooksForm from "./MyBooksForm/MyBooksForm";
 
 import styles from "./my-books.module.scss";
 
-const getInitialValue = (key, initialValue) => {
-  const result = JSON.parse(localStorage.getItem(key));
-  return result || initialValue;
-};
-
 const MyBooks = () => {
   const [books, setBooks] = useState(() => getInitialValue("my-books", []));
   const [filter, setFilter] = useState(false);
 
   const firstRender = useRef(true);
-  console.log(true);
+  // console.log(firstRender);
 
   useEffect(() => {
     if (firstRender.current) {
-      firstRender.current = false;
+      firstRender.current = false; // не переписуємо локал сторедж
       return;
     }
     localStorage.setItem("my-books", JSON.stringify(books));
