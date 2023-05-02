@@ -1,39 +1,78 @@
-import { Component } from "react";
+import { useState } from "react";
+import initialState from "./initialstate";
 
-class PostsSearchForm extends Component {
-    state = {
-        search: ""
-    }
+const PostsSearchForm = ({ onSubmit }) => {
+  const [state, setState] = useState({ ...initialState });
 
-    handleChange = ({ target }) => {
-        const { name, value, checked, type } = target;
-        const newValue = type === "checkbox" ? checked : value;
-        this.setState({
-            [name]: newValue
-        })
-    }
+  const handleChange = ({ target }) => {
+    //дані з інпута
+    //    console.log(target)
+    setState((prevState) => {
+      const { name, value, checked, type } = target;
+      const newValue = type === "checkbox" ? checked : value;
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        const {onSubmit} = this.props;
-        onSubmit({...this.state});
-        this.reset();
-    }
+      return { ...prevState, [name]: newValue };
+    });
+  };
 
-    reset() {
-        this.setState({ search: "" })
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    render() {
-        const {search} = this.state;
+    onSubmit({ ...state });
+    setState({ ...initialState }); // очищуєм форму
+  };
 
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <input name="search" value={search} onChange={this.handleChange} placeholder="Search post" required />
-                <button type="submit">Search</button>
-            </form>
-        )
-    }
-}
+  const { search } = state;
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name="search"
+        value={search}
+        onChange={handleChange}
+        placeholder="Search post"
+        required
+      />
+      <button type="submit">Search</button>
+    </form>
+  );
+};
 
 export default PostsSearchForm;
+
+// class PostsSearchForm extends Component {
+//     state = {
+//         search: ""
+//     }
+
+//     handleChange = ({ target }) => {
+//         const { name, value, checked, type } = target;
+//         const newValue = type === "checkbox" ? checked : value;
+//         this.setState({
+//             [name]: newValue
+//         })
+//     }
+
+//     handleSubmit = (e) => {
+//         e.preventDefault();
+//         const {onSubmit} = this.props;
+//         onSubmit({...this.state});
+//         this.reset();
+//     }
+
+//     reset() {
+//         this.setState({ search: "" })
+//     }
+
+//     render() {
+//         const {search} = this.state;
+
+//         return (
+//             <form onSubmit={this.handleSubmit}>
+//                 <input name="search" value={search} onChange={this.handleChange} placeholder="Search post" required />
+//                 <button type="submit">Search</button>
+//             </form>
+//         )
+//     }
+// }
+
+// export default PostsSearchForm;

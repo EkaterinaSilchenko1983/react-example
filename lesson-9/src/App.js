@@ -17,14 +17,14 @@ function App() {
     <>
       {/* <Navbar menuItems={navbarMenuItems} /> */}
       <div className="container">
-        <Timer />
+        {/* <Timer />
         <Timerwithdisabled />
-        <BuyList />
-        {/* <PostsSearch /> */}
+        <BuyList /> */}
+        <PostsSearch />
         {/* <Posts /> */}
         {/* <ToggleButton text="Click me" />
         <Vote /> */}
-        {/* <MyBooks /> */}
+        <MyBooks />
       </div>
     </>
   );

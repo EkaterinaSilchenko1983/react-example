@@ -1,36 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 
+import useForm from "../../../shared/hooks/useForm";
+
 import initialState from "./initialState";
 
 import styles from "./my-books-form.module.scss";
 
 const MyBooksForm = ({ onSubmit }) => {
-  const [state, setState] = useState({ ...initialState });
+  const { state, handleChange, handleSubmit } = useForm({
+    initialState,
+    onSubmit,
+  });
 
   const titleRef = useRef(false);
 
   useEffect(() => {
     titleRef.current.focus();
-    titleRef.current = true;
   }, []);
-
-  const handleChange = ({ target }) => {
-    //дані з інпута
-    //    console.log(target)
-    setState((prevState) => {
-      const { name, value, checked, type } = target;
-      const newValue = type === "checkbox" ? checked : value;
-
-      return { ...prevState, [name]: newValue };
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    onSubmit({ ...state });
-    setState({ ...initialState }); // очищуєм форму
-  };
 
   const { title, author, favorite } = state;
 
