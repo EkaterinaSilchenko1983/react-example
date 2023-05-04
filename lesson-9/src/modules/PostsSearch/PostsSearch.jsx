@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import Modal from "../../shared/components/Modal/Modal";
 
@@ -35,25 +35,23 @@ const PostsSearch = () => {
     }
   }, [search, page]);
 
-  const updateSearch = ({ search }) => {
-    setSerch(search);
+  const updateSearch = useCallback(({ search: searchString }) => {
+    setSerch(searchString);
     setPage(1);
     setItems([]);
-  };
+  }, []);
 
-  const loadMore = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+  const loadMore = useCallback(() => setPage((prevPage) => prevPage + 1), []);
 
-  const onShowModal = ({ title, body }) => {
+  const onShowModal = useCallback(({ title, body }) => {
     setShowModal(true);
     setPostDetails({ title, body });
-  };
+  }, []);
 
-  const onCloseModal = () => {
+  const onCloseModal = useCallback(() => {
     setShowModal(false);
     setPostDetails({});
-  };
+  }, []);
 
   const elements = items.map(({ id, title, body }) => (
     <li

@@ -24,7 +24,7 @@ function App() {
         {/* <Posts /> */}
         {/* <ToggleButton text="Click me" />
         <Vote /> */}
-        <MyBooks />
+        {/* <MyBooks /> */}
       </div>
     </>
   );

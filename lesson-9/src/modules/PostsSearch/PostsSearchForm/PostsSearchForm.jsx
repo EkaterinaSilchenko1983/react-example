@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { memo } from "react";
 
 import useForm from "../../../shared/hooks/useForm";
 import initialState from "./initialstate";
@@ -24,7 +24,7 @@ const PostsSearchForm = ({ onSubmit }) => {
   );
 };
 
-export default PostsSearchForm;
+export default memo(PostsSearchForm);
 
 // class PostsSearchForm extends Component {
 //     state = {
