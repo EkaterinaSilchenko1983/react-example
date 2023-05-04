@@ -1,26 +1,13 @@
-import { useState } from "react";
+// import { useState } from "react";
+
+import useForm from "../../../shared/hooks/useForm";
 import initialState from "./initialstate";
 
 const PostsSearchForm = ({ onSubmit }) => {
-  const [state, setState] = useState({ ...initialState });
-
-  const handleChange = ({ target }) => {
-    //дані з інпута
-    //    console.log(target)
-    setState((prevState) => {
-      const { name, value, checked, type } = target;
-      const newValue = type === "checkbox" ? checked : value;
-
-      return { ...prevState, [name]: newValue };
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    onSubmit({ ...state });
-    setState({ ...initialState }); // очищуєм форму
-  };
+  const { handleChange, handleSubmit, state } = useForm({
+    initialState,
+    onSubmit,
+  });
 
   const { search } = state;
   return (

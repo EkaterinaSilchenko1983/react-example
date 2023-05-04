@@ -1,5 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useCallback } from "react"; // useCallback - запам'ятовує тіло функції
 import { nanoid } from "nanoid";
+
+import useLocalStorage from "../../shared/hooks/useLocalStorage";
 
 import MyBooksBlock from "./MyBooksBlock/MyBooksBlock";
 import MyBooksList from "./MyBooksList/MyBooksList";
@@ -8,26 +10,15 @@ import MyBooksForm from "./MyBooksForm/MyBooksForm";
 import styles from "./my-books.module.scss";
 
 const MyBooks = () => {
-  const [books, setBooks] = useState(() => {
-    const items = JSON.parse(localStorage.getItem("my-books"));
-    return items?.length ? items : [];
+  const [books, setBooks] = useLocalStorage({
+    key: "my-books",
+    initialValue: [],
   });
   const [filter, setFilter] = useState(false);
 
-  const firstRender = useRef(true);
-  console.log(true);
+  const handleFilter = useCallback(({ target }) => setFilter(target.value), []);
 
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    localStorage.setItem("my-books", JSON.stringify(books));
-  }, [books]);
-
-  const handleFilter = ({ target }) => setFilter(target.value);
-
-  const onAddBook = ({ title, author, favorite }) => {
+  const onAddBook = useCallback(({ title, author, favorite }) => {
     if (isDublicate({ title, author })) {
       return alert(`${title} - ${author} is already exist`);
     }
@@ -41,7 +32,7 @@ const MyBooks = () => {
 
       return [...prevBooks, newBook];
     });
-  };
+  }, []);
 
   const isDublicate = ({ title, author }) => {
     const normalizedTitle = title.toLowerCase();

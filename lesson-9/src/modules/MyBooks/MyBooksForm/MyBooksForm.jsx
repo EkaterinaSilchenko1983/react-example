@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo, memo } from "react";
+import { nanoid } from "nanoid";
 
 import useForm from "../../../shared/hooks/useForm";
 
@@ -12,6 +13,10 @@ const MyBooksForm = ({ onSubmit }) => {
     onSubmit,
   });
 
+  const titleId = useMemo(() => nanoid(), []); // запам'ятовує та під час наступних рендерів повертає записане значення
+
+  const authorId = useMemo(() => nanoid(), []);
+
   const titleRef = useRef(false);
 
   useEffect(() => {
@@ -23,8 +28,9 @@ const MyBooksForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.formGroup}>
-        <label>Book title</label>
+        <label htmlFor={titleId}>Book title</label>
         <input
+          id={titleId}
           ref={titleRef}
           value={title}
           name="title"
@@ -35,8 +41,9 @@ const MyBooksForm = ({ onSubmit }) => {
         />
       </div>
       <div className={styles.formGroup}>
-        <label>Book author</label>
+        <label htmlFor={authorId}>Book author</label>
         <input
+          id={authorId}
           value={author}
           name="author"
           onChange={handleChange}
@@ -60,7 +67,7 @@ const MyBooksForm = ({ onSubmit }) => {
   );
 };
 
-export default MyBooksForm;
+export default memo(MyBooksForm); //повертається меморизований компонент - ф-ція яка після перщного рендера зап'ятовує які пропси прийшли і запам'товує результат ретьорн, порівнює нове значення пропсів зі старими
 
 // class MyBooksForm extends Component {
 //     state = {...initialState}
