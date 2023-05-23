@@ -32,23 +32,20 @@ const MyBooks = () => {
   };
 
   const handleFilter = ({ target }) => {
-    const action = setFilter(target.value);
-    dispatch(action);
+    dispatch(setFilter(target.value));
   };
 
   const onAddBook = ({ title, author, favorite }) => {
     if (isDublicate({ title, author })) {
       return alert(`${title} - ${author} is already exist`);
     }
-    const action = addBook({ title, author, favorite }); //передаємо payload
-    console.log(action);
-    dispatch(action);
+
+    console.log(addBook({ title, author, favorite }));
+    dispatch(addBook({ title, author, favorite })); //передаємо payload
   };
 
   const onDeleteBook = (id) => {
-    const action = deleteBook(id);
-    dispatch(action);
-    console.log(action);
+    dispatch(deleteBook(id));
   };
 
   return (

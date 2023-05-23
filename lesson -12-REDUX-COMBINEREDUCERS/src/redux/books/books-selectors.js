@@ -1,8 +1,9 @@
 export const getBooks = (store) => store.books;
+
 export const getFavoriteBooks = (store) => {
   return store.books.filter(({ favorite }) => favorite); // повертаємо лише ті книги в яких поле favorite =true
 };
-export const getFilter = (store) => store.filter;
+
 export const getFilteredBooks = (store) => {
   const { filter, books } = store;
   if (!filter) {
